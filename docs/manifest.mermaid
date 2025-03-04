@@ -1,0 +1,95 @@
+graph TD
+    %% Main Flow Initiation
+    A[Candidate Starts Exam<br>Cross-Platform Interface] --> B[Secure Exam Environment Module]
+
+    %% Subgraph: Secure Exam Environment
+    subgraph SecureEnvironment[Secure Exam Environment<br>Linux/Windows/macOS]
+        B --> B1[Isolate/Remove All Files<br>OS-Specific Logic]
+        B --> B2[Monitor Screen-Sharing<br>Process Detection]
+        B --> B3[Disable Clipboard & Shortcuts<br>Browser + OS]
+        B --> B4[Block Non-Exam Apps<br>Process Termination]
+        B --> B5[Detect Peripheral Usage<br>System Events]
+        B --> B6[Monitor Video Feed<br>&#40;Camera & Display&#41;]
+        B --> B7[Monitor Audio Feed<br>&#40;Microphone & System Audio&#41;]
+    end
+
+    %% Subgraph: Data Collection
+    subgraph DataCollection[Behavioral & Media Data Collection]
+        B --> C1[Track Mouse Movements<br>Browser API]
+        B --> C2[Monitor Keystrokes<br>Browser API]
+        B --> C3[Detect Activity Shifts<br>Browser API]
+        C1 --> D1[Extract: Speed, Jitter, Inactivity]
+        C2 --> D2[Extract: Typing Rate, Pauses]
+        C3 --> D3[Extract: Switch Attempts, Idle Time]
+        B2 --> D4[Extract: Screen-Sharing Events]
+        B5 --> D5[Extract: Peripheral Alerts]
+        B6 --> D6[Extract: Video Anomalies<br>&#40;Face/Gaze Detection&#41;]
+        B7 --> D7[Extract: Audio Anomalies<br>&#40;Volume, Background Noise&#41;]
+    end
+
+    %% Subgraph: Feature Processing
+    subgraph FeatureProcessing[Feature Processing]
+        D1 --> E[Behavioral Feature Engineering]
+        D2 --> E
+        D3 --> E
+        D4 --> E
+        D5 --> E
+        D6 --> E
+        D7 --> E
+        E --> F1[Normalize Data]
+        E --> F2[Score Secure Environment Violations]
+        F1 --> G[Feature Vector]
+        F2 --> G
+    end
+
+    %% Subgraph: Risk Scoring
+    subgraph RiskScoring[Dynamic Risk Scoring]
+        G --> H1[LSTM for Behavioral Patterns]
+        G --> H2[Decision Tree for Violations]
+        H1 --> I[Risk Score: 0-100]
+        H2 --> I
+        I --> J1[Low Risk: 0-30]
+        I --> J2[Medium Risk: 31-70]
+        I --> J3[High Risk: 71-100]
+    end
+
+    %% Subgraph: LLM Integration
+    subgraph LLMIntegration[LLM Decision Engine]
+        J1 --> K1[No Action]
+        J2 --> K2[Medium Risk Analysis]
+        J3 --> K3[High Risk Analysis]
+        K2 --> L1[LLM: Generate Warning<br>'Screen-sharing or audio anomalies detected...']
+        K3 --> L2[LLM: Generate Explanation<br>'File access & video feed irregularities flagged...']
+        L1 --> M1[Display Warning]
+        L2 --> M2[Lock Exam & Notify Admin]
+    end
+
+    %% Subgraph: Interventions
+    subgraph Interventions[Adaptive Interventions]
+        K1 --> N1[Exam Continues]
+        M1 --> N2[Warn Candidate]
+        M2 --> N3[Restrict Features: Lock Interface]
+        M2 --> N4[Admin Alert with LLM Report]
+        N3 --> O[Compliance Check]
+        O -->|Compliant| N1
+        O -->|Non-Compliant| N4
+    end
+
+    %% Subgraph: Post-Exam
+    subgraph PostExam[Post-Exam Processing]
+        N1 --> P1[Exam Completes]
+        P1 --> P2[Restore Isolated Files<br>OS-Specific Logic]
+        P1 --> P3[Generate LLM Risk Report]
+        P3 --> Q[Admin Review: 'X violations detected']
+    end
+
+    %% Subgraph: Adaptive Feedback
+    subgraph Feedback[Adaptive Feedback]
+        Q --> R[Collect Admin & Candidate Feedback]
+        R --> S[Update Risk & LLM Models]
+        S --> G
+    end
+
+    %% Connections
+    N2 --> N1
+    N4 --> Q
